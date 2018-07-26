@@ -7,7 +7,7 @@ namespace ES.Test
     {
         static void Main(string[] args)
         {
-            var node = new Uri("http://0.0.0.0:9200");
+            var node = new Uri("http://localhost:9200");
             var settings = new ConnectionSettings(node).DefaultIndex("test");
             var client = new ElasticClient(settings);
             if(!client.IndexExists("test").Exists)
@@ -25,12 +25,37 @@ namespace ES.Test
                 );
 
                 if (!createResult.IsValid)
+                {
                     Console.WriteLine($"Error: {createResult.DebugInformation}");                   
+                    return;
+                }
             }
 
             var result = client.IndexDocument(new Model{Id = 1, Name ="Test"});
             if (!result.IsValid)
-                Console.WriteLine($"Error: {result.DebugInformation}");               
+                Console.WriteLine($"Error: {result.DebugInformation}"); 
+                
+            result = client.IndexDocument(new Model{Id = 1, Name ="Test"});
+            if (!result.IsValid)
+                Console.WriteLine($"Error: {result.DebugInformation}"); 
+                
+            var searchResponse = client.Search<Model>(s => s
+                .From(0)
+                .Size(10)
+                .Query(q => q
+                     .Match(m => m
+                        .Field(f => f.Name)
+                        .Query("Test")
+                     )
+                )
+            );
+            
+            var people = searchResponse.Documents; 
+            
+            foreach(var item in people)
+            {
+                Console.WriteLine($"Error: {item.Name}");    
+            }
         }
     }
 
