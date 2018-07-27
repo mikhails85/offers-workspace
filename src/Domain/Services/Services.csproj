@@ -1,5 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Results\Results.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\Common\Wrappers\Wrappers.csproj" />
+    <ProjectReference Include="..\..\Integration\Elastic\Elastic.csproj" />
+    <ProjectReference Include="..\..\Integration\MySQL\MySQL.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
