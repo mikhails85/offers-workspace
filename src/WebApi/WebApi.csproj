@@ -9,7 +9,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Integration\RabbitMQ\RabbitMQ.csproj" />
+    <ProjectReference Include="..\Integration\MySQL\MySQL.csproj" />
+    <ProjectReference Include="..\Integration\Elastic\Elastic.csproj" />
+    <ProjectReference Include="..\Domain\Services\Services.csproj" />
+    <ProjectReference Include="..\Domain\Models\Models.csproj" />
+    <ProjectReference Include="..\Domain\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\Common\Logger\Logger.csproj" />
+    <ProjectReference Include="..\Common\Results\Results.csproj" />
+    <ProjectReference Include="..\Common\Utils\Utils.csproj" />
+    <ProjectReference Include="..\Common\Wrappers\Wrappers.csproj" />
   </ItemGroup>
 
 </Project>
