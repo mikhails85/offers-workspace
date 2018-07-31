@@ -22,10 +22,7 @@ namespace Elastic.Indexes.Models
             o.Name = offer.Name;
             o.Description = offer.Description;
             o.RequaredSkills = offer.RequaredSkills;
-            Console.WriteLine($"Is RequaredSkills null:{o.RequaredSkills==null}");
-            Console.WriteLine($"RequaredSkills count:{o.RequaredSkills.Count()}");
-            Console.WriteLine($"RequaredSkills Name:{o.RequaredSkills[0].Id}");
-            Console.WriteLine($"RequaredSkills Name:{o.RequaredSkills[0].Name}");
+                        
             foreach(var skill in offer.RequaredSkills)    
             {
                 o.Query &= new MatchQuery 
