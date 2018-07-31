@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Contracts.Integration;
+using Elastic.Indexes.Errors;
 using Models;
 using Results;
 using Wrappers;
@@ -25,9 +26,13 @@ namespace Elastic.Indexes.Queries
             var toUpdate = this.actions.Where(x=>x.Action == CRUDActionType.Update).Select(x=>x.Entity).ToList();
 
             var client = context.GetClient();
-            client.Bulk(x=>x.IndexMany(toCreate,(a,b)=>{return a.Id(b.Id);})
+            var result = client.Bulk(x=>x.IndexMany(toCreate,(a,b)=>{return a.Id(b.Id);})
                             .UpdateMany(toUpdate,(a,b)=>{return a.Id(b.Id);})
                             .DeleteMany(toDelete,(a,b)=>{return a.Id(b.Id);}));
+            if(!result.IsValid)
+            {
+                this.AddErrors(new QueryExectutionFailedError(result.DebugInformation));
+            }
         }
     }
 }
