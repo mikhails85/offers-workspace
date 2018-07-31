@@ -44,7 +44,7 @@ namespace DatabaseSynchronizer.Jobs
             var result = this.storage.Get<Offer>().Query(new ExecuteOffersBatch(batch));
             if(!result.Success)
             {
-                this.logger.LogError($"Offer batch result:{result.Errors[0]}");       
+                this.logger.LogError($"Offer batch result:{result.Errors[0].Message}");       
             }
             return result;
         }
