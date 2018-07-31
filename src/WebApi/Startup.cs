@@ -28,6 +28,7 @@ namespace WebApi
         {
             services.AddDependencyInjection(this.Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +46,7 @@ namespace WebApi
             app.UseHttpsRedirection();
             app.UseApiExtension();
             app.UseMvc();
+            app.UseCors();
         }
     }
 }
