@@ -27,12 +27,12 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDependencyInjection(this.Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors(options => options.AddPolicy("AllowAllOrigins",
                     builder =>
                     {
                         builder.AllowAnyOrigin();
                     }));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,11 +46,10 @@ namespace WebApi
             {
                 app.UseHsts();
             }
-
+            app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseApiExtension();
-            app.UseMvc();
-            app.UseCors("AllowAllOrigins");
+            app.UseMvc();            
         }
     }
 }
