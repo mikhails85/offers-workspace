@@ -20,7 +20,7 @@ import form from "../controls/Form.vue";
 
 let page = 0;
 let size = 50;
-let searching = null;
+let searching = "";
 
 export default {
   name: "Offers",
@@ -62,14 +62,18 @@ export default {
     },
     addItem(evt) {
       evt.preventDefault();
-      axios.post(
-        "http://es-workspace-mikhails85.c9users.io:8081/api/offers/addoffer",
-        {
-          Name: this.newOffer.name,
-          Description: this.newOffer.description
-        }
-      );
-      this.refresh();
+      axios
+        .post(
+          "http://es-workspace-mikhails85.c9users.io:8081/api/offers/addoffer",
+          {
+            Name: this.newOffer.name,
+            Description: this.newOffer.description
+          }
+        )
+        .then(r => {
+          this.refresh();
+        });
+
       this.$root.$emit("bv::hide::modal", "modalAdd", null);
     },
     create() {
@@ -79,10 +83,15 @@ export default {
       this.$router.push({ name: "Offer", params: { id: item.id } });
     },
     remove(item) {
-      axios.delete(
-        "http://es-workspace-mikhails85.c9users.io:8081/api/offers/" + item.id
-      );
-      this.refresh();
+      axios
+        .delete(
+          "http://es-workspace-mikhails85.c9users.io:8081/api/offers/" +
+            item.id +
+            "/deleteoffer"
+        )
+        .then(r => {
+          this.refresh();
+        });
     },
     search(text) {
       searching = text;

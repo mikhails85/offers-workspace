@@ -21,9 +21,9 @@ namespace Elastic.Indexes.Models
             o.Id = offer.Id;
             o.Name = offer.Name;
             o.Description = offer.Description;
-            o.RequaredSkills = offer.RequaredSkills;
+            o.RequaredSkills = offer.RequaredSkills.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Name)).ToList();
                         
-            foreach(var skill in offer.RequaredSkills)    
+            foreach(var skill in o.RequaredSkills)    
             {
                 o.Query &= new MatchQuery 
                 {

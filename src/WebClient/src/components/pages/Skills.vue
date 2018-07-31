@@ -50,13 +50,17 @@ export default {
     },
     addItem(evt) {
       evt.preventDefault();
-      axios.post(
-        "http://es-workspace-mikhails85.c9users.io:8081/api/skills/addskill",
-        {
-          Name: this.newSkill.name
-        }
-      );
-      this.refresh();
+      axios
+        .post(
+          "http://es-workspace-mikhails85.c9users.io:8081/api/skills/addskill",
+          {
+            Name: this.newSkill.name
+          }
+        )
+        .then(r => {
+          this.refresh();
+        });
+
       this.$root.$emit("bv::hide::modal", "modalAdd", null);
     },
     create() {

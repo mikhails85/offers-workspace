@@ -52,7 +52,7 @@ namespace MySql.Queries
                 offers.Add(o.Id,o);
             }
             
-            if (!string.IsNullOrWhiteSpace(skill.Name) && o.RequaredSkills.All(s => s.Id != skill.Id))
+            if (skill != null && !string.IsNullOrWhiteSpace(skill.Name) && o.RequaredSkills.All(s => s.Id != skill.Id))
             {
                 o.RequaredSkills.Add(skill);
             }
