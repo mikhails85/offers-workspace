@@ -30,7 +30,7 @@ namespace WebApi
             services.AddCors(options => options.AddPolicy("AllowAllOrigins",
                     builder =>
                     {
-                        builder.AllowAnyOrigin();
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                     }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);            
         }
