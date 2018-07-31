@@ -41,7 +41,12 @@ namespace DatabaseSynchronizer.Jobs
              if(!batch.Any())
                 return new VoidResult();
             this.logger.LogInfo($"Offer batch count:{batch.Count()}");       
-            return this.storage.Get<Offer>().Query(new ExecuteOffersBatch(batch));
+            var result = this.storage.Get<Offer>().Query(new ExecuteOffersBatch(batch));
+            if(!result.Success)
+            {
+                this.logger.LogError($"Offer batch result:{result.Errors[0]}");       
+            }
+            return result;
         }
     }
 }

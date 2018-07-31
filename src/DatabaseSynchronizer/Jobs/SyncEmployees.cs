@@ -32,13 +32,13 @@ namespace DatabaseSynchronizer.Jobs
                     employeesListener.FatchMessages();
                 },null,  10*1000, 10*1000);  
         }
-        
+
         private VoidResult BatchHandler(IEnumerable<CRUDWrapper<Employee>> batch) 
         {
             if(!batch.Any())
                 return new VoidResult();
                 
-            return this.storage.Get<Employee>().Query(new ExecuteEmployeesBatch(batch));
+            return this.storage.Get<Employee>().Query(new ExecuteEmployeesBatch(batch));            
         }
     }
 }
