@@ -6,6 +6,7 @@ import Skills from "../components/pages/Skills";
 import Offers from "../components/pages/Offers";
 import Employees from "../components/pages/Employees";
 import OfferDetails from "../components/pages/OfferDetails";
+import EmployeeDetails from "../components/pages/EmployeeDetails";
 
 Vue.use(Router);
 
@@ -42,6 +43,18 @@ export default new Router({
       path: "/employees",
       name: "Employees",
       component: Employees
+    },
+    {
+      path: "/employees/:id",
+      name: "Employees",
+      component: { template: "<router-view></router-view>" },
+      children: [
+        {
+          path: "",
+          name: "Employee",
+          component: EmployeeDetails
+        }
+      ]
     }
   ],
   mode: "history"

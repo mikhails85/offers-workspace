@@ -26,7 +26,7 @@ namespace Elastic.Indexes.Models
             e.CV = employee.CV;
             e.Projects = employee.Projects;
 
-            e.Skills = employee.Projects.SelectMany(x=>x.UsedSkills).GroupBy(x=>x.Name).Select(x=>x.Key).ToList();
+            e.Skills = employee.Projects?.SelectMany(x=>x.UsedSkills).GroupBy(x=>x.Name).Select(x=>x.Key).ToList();
             return e;
         }
 

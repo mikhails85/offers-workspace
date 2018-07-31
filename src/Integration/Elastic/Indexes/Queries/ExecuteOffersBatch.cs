@@ -34,7 +34,7 @@ namespace Elastic.Indexes.Queries
                 if(toUpdate.Any())
                     x=x.UpdateMany(toUpdate,(a,b)=>{return a.Id(b.Id);});
                     
-                 if(toDelete.Any())
+                if(toDelete.Any())
                     x=x.DeleteMany(toDelete,(a,b)=>{return a.Id(b.Id);});    
                     
                 return x;

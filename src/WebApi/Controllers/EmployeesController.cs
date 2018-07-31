@@ -26,13 +26,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult AddEmployee(Employee profile)
+        public IActionResult AddEmployee([FromBody] Employee profile)
         {
             return this.Result(this.Service<IEmployeeManager>().AddEmployee(profile));
         }
 
         [HttpPut("{id}/[action]")]
-        public IActionResult UpdateEmployee(Employee profile)
+        public IActionResult UpdateEmployee([FromQuery]long id, [FromBody] Employee profile)
         {
             return this.Result(this.Service<IEmployeeManager>().UpdateEmployee(profile));
         }
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{id}/[action]")]
-        public IActionResult AddProject(Project project) 
+        public IActionResult AddProject([FromQuery]long id, [FromBody] Project project) 
         {
             return this.Result(this.Service<IEmployeeManager>().AddProject(project));
         }

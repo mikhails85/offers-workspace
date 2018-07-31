@@ -53,7 +53,7 @@ namespace MySql.Queries
                 employees.Add(e.Id,e);
             }
 
-            if (e.Projects.All(p => p.Id != project.Id))
+            if (project!=null && e.Projects.All(p => p.Id != project.Id))
             {
                 project.UsedSkills = new List<Skill>();
                 e.Projects.Add(project);
@@ -61,7 +61,7 @@ namespace MySql.Queries
 
             var proj = e.Projects.First(p => p.Id == project.Id);
 
-            if (proj.UsedSkills.All(s => s.Id != skill.Id))
+            if (skill !=null && proj.UsedSkills.All(s => s.Id != skill.Id))
             {
                 proj.UsedSkills.Add(skill);
             }
