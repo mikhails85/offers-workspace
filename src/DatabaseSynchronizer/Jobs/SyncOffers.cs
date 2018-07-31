@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using Contracts.Integration;
 using Elastic.Indexes.Queries;
+using Logger;
 using Models;
 using RabbitMq.Handlers;
 using Results;
@@ -16,11 +17,13 @@ namespace DatabaseSynchronizer.Jobs
     {
         private readonly IESStorage storage;
         private readonly IQueueManager queue;
+        private readonly ILogger logger;
 
-        public SyncOffers(IESStorage storage, IQueueManager queue)
+        public SyncOffers(IESStorage storage, IQueueManager queue, ILogger logger)
         {
             this.storage =storage;
-            this.queue = queue;    
+            this.queue = queue; 
+            this.logger = logger;   
         }
 
         public void Run()
@@ -29,14 +32,15 @@ namespace DatabaseSynchronizer.Jobs
             this.queue.Listener(offersListener).Start();
             var offersTimer = new Timer(
                 (o) => {
+                    this.logger.LogInfo("Offer batch 'Fatch Messages'");  
                     offersListener.FatchMessages();
                 },null,  10*1000, 10*1000);
         }
         private VoidResult BatchHandler(IEnumerable<CRUDWrapper<Offer>> batch) 
-        {
+        {            
              if(!batch.Any())
                 return new VoidResult();
-                
+            this.logger.LogInfo($"Offer batch count:{batch.Count()}");       
             return this.storage.Get<Offer>().Query(new ExecuteOffersBatch(batch));
         }
     }
