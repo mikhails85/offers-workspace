@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Contracts.Integration;
 using Elastic.Indexes.Errors;
+using Elastic.Indexes.Models;
 using Models;
 using Results;
 using Wrappers;
@@ -21,9 +22,9 @@ namespace Elastic.Indexes.Queries
 
         public void Execute(IESIndex<Offer> context)
         {
-            var toDelete = this.actions.Where(x=>x.Action == CRUDActionType.Delete).Select(x=>x.Entity).ToList();
-            var toCreate = this.actions.Where(x=>x.Action == CRUDActionType.Create).Select(x=>x.Entity).ToList();
-            var toUpdate = this.actions.Where(x=>x.Action == CRUDActionType.Update).Select(x=>x.Entity).ToList();
+            var toDelete = this.actions.Where(x=>x.Action == CRUDActionType.Delete).Select(x=>(ESOffer)x.Entity).ToList();
+            var toCreate = this.actions.Where(x=>x.Action == CRUDActionType.Create).Select(x=>(ESOffer)x.Entity).ToList();
+            var toUpdate = this.actions.Where(x=>x.Action == CRUDActionType.Update).Select(x=>(ESOffer)x.Entity).ToList();
 
             var client = context.GetClient();
             var result = client.Bulk(x => {
