@@ -62,10 +62,13 @@ export default {
     },
     addItem(evt) {
       evt.preventDefault();
-      axios.post("/api/offers/addoffer", {
-        Name: this.newOffer.name,
-        Description: this.newOffer.description
-      });
+      axios.post(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/offers/addoffer",
+        {
+          Name: this.newOffer.name,
+          Description: this.newOffer.description
+        }
+      );
       this.refresh();
       this.$root.$emit("bv::hide::modal", "modalAdd", null);
     },
@@ -76,7 +79,9 @@ export default {
       this.$router.push({ name: "Offer", params: { id: item.id } });
     },
     remove(item) {
-      axios.delete("/api/offers/" + item.id);
+      axios.delete(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/offers/" + item.id
+      );
       this.refresh();
     },
     search(text) {
@@ -92,7 +97,7 @@ export default {
       let self = this;
       axios
         .get(
-          "/api/offers/list?page=0&size=" +
+          "http://es-workspace-mikhails85.c9users.io:8081/api/offers/list?page=0&size=" +
             (page + 1) * size +
             "&search=" +
             searching

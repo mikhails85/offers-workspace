@@ -50,9 +50,12 @@ export default {
     },
     addItem(evt) {
       evt.preventDefault();
-      axios.post("/api/skills/addskill", {
-        Name: this.newSkill.name
-      });
+      axios.post(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/skills/addskill",
+        {
+          Name: this.newSkill.name
+        }
+      );
       this.refresh();
       this.$root.$emit("bv::hide::modal", "modalAdd", null);
     },
@@ -61,11 +64,13 @@ export default {
     },
     refresh() {
       let self = this;
-      axios.get("/api/skills/list").then(r => {
-        if (r.data.success) {
-          self.$refs.table.refresh(r.data.value);
-        }
-      });
+      axios
+        .get("http://es-workspace-mikhails85.c9users.io:8081/api/skills/list")
+        .then(r => {
+          if (r.data.success) {
+            self.$refs.table.refresh(r.data.value);
+          }
+        });
     }
   },
   mounted() {
