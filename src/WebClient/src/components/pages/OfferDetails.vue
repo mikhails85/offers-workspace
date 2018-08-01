@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-// import axios from "axios";
+import axios from "axios";
 import selector from "../controls/Selector.vue";
 import form from "../controls/Form.vue";
 export default {
@@ -58,21 +58,39 @@ export default {
   },
   methods: {
     updateOffer() {
-      alert(JSON.stringify(this.offer));
+      axios.put(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/offers/" +
+          this.id +
+          "/updateoffer",
+        this.offer
+      );
     }
   },
   mounted() {
-    this.offer = {
-      id: this.id,
-      name: "TP",
-      description: "Test Project",
-      requaredSkills: []
-    };
-    this.skills = [
-      { id: 1, name: "Skill 1" },
-      { id: 2, name: "Skill 2" },
-      { id: 3, name: "Skill 3" }
-    ];
+    axios
+      .get("http://es-workspace-mikhails85.c9users.io:8081/api/skills/list")
+      .then(sr => {
+        if (!sr.data.success) {
+          return;
+        }
+
+        this.skills = sr.data.value;
+        axios
+          .get(
+            "http://es-workspace-mikhails85.c9users.io:8081/api/offers/" +
+              this.id +
+              "/getoffer"
+          )
+          .then(r => {
+            if (!r.data.success) {
+              return;
+            }
+            this.offer = r.data.value;
+            if (!this.offer.requaredSkills) {
+              this.offer.requaredSkills = [];
+            }
+          });
+      });
   }
 };
 </script>
