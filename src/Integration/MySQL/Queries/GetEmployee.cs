@@ -29,7 +29,7 @@ namespace MySql.Queries
 
                 dbConnection.Query<Employee, Project, Skill, Employee>(@"SELECT Employees.*, Projects.*, Skills.*
                             FROM Employees
-                            LEFT JOIN Projects ON Employees.Id = Projects.EmployeesId
+                            LEFT JOIN Projects ON Employees.Id = Projects.EmployeeId
                             LEFT JOIN ProjectsSkills ON Projects.Id = ProjectsSkills.ProjectId
                             LEFT JOIN Skills ON ProjectsSkills.SkillId = Skills.Id
                             WHERE Employees.Id = @Id;", Mapping, new {Id = employeeId });  
@@ -58,7 +58,12 @@ namespace MySql.Queries
                 project.UsedSkills = new List<Skill>();
                 e.Projects.Add(project);
             }
-
+            
+            if(project == null)
+            {
+                return e;
+            }
+            
             var proj = e.Projects.First(p => p.Id == project.Id);
 
             if (skill !=null && proj.UsedSkills.All(s => s.Id != skill.Id))

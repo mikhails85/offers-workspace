@@ -1,6 +1,6 @@
 <template>
     <div class="animated fadeIn">
-        <div class="card">
+        <div class="card" v-if="offer">
             <div class="card-header">
                 #{{offer.id}}:{{offer.name}}
             </div>
