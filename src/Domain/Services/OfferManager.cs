@@ -37,7 +37,11 @@ namespace Services
                 }  
                 foreach(var skill in offer.RequaredSkills)
                 {
-                   this.context.Query(new AddOfferSkill(offer.Id, skill.Id));     
+                   var addOfferSkillResult = this.context.Query(new AddOfferSkill(offer.Id, skill.Id));     
+                   if(!addOfferSkillResult.Success)
+                   {
+                       return addOfferSkillResult;
+                   }
                 }
 
                 context.Save();                
@@ -89,6 +93,26 @@ namespace Services
             var updateResult = this.context.Query(new UpdateOffer(dbOffer));
             if(updateResult.Success)
             {
+                if(offer.RequaredSkills == null)          
+                {
+                   offer.RequaredSkills = new List<Skill>();
+                }  
+
+                var delSkillResult = this.context.Query(new DeleteOfferSkills(dbOffer.Id));
+                if(!delSkillResult.Success)
+                {
+                    return delSkillResult;
+                }   
+
+                foreach(var skill in offer.RequaredSkills)
+                {
+                   var addOfferSkillResult = this.context.Query(new AddOfferSkill(dbOffer.Id, skill.Id));     
+                   if(!addOfferSkillResult.Success)
+                   {
+                       return addOfferSkillResult;
+                   }
+                }
+
                 context.Save();                
                 queue.SendMessage("offers", new CRUDWrapper<Offer>{ Action = CRUDActionType.Update, Entity = offer });
             }            
