@@ -25,6 +25,12 @@ namespace WebApi.Controllers
             return this.Result(this.Service<IEmployeeManager>().GetEmployee(id));
         }
 
+        [HttpGet("{id}/[action]")]
+        public IActionResult GetProjects(long id)
+        {
+            return this.Result(this.Service<IEmployeeManager>().GetEmployeeProjects(id));
+        }
+        
         [HttpPost("[action]")]
         public IActionResult AddEmployee([FromBody] Employee profile)
         {

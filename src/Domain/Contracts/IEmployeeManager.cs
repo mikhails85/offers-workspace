@@ -15,6 +15,7 @@ namespace Contracts
         VoidResult DeleteProject(long id, long projectId);
         VoidResult UpdateEmployee(Employee employee);
         Result<Employee> GetEmployee(long id);
+        Result<IEnumerable<Project>> GetEmployeeProjects(long id);
         Result<IEnumerable<Employee>> GetEmployeeList(int page, int size, string search);
     }
 }

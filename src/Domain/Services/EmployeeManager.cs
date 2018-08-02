@@ -161,6 +161,11 @@ namespace Services
             return this.context.Query(new GetEmployee(id));
         }
         
+        public Result<IEnumerable<Project>> GetEmployeeProjects(long id)
+        {
+            return this.context.Query(new GetEmployeeProjects(id));
+        }
+
         public Result<IEnumerable<Employee>> GetEmployeeList(int page, int size, string search)
         {
             return this.esstorage.Get<Employee>().Query(new SearchEmployees(page, size, search));
