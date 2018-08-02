@@ -54,6 +54,9 @@ export default {
       if (removeObj) {
         this.selected.splice(this.selected.indexOf(removeObj), 1);
       }
+    },
+    refresh(items) {
+      this.selected = items;
     }
   }
 };

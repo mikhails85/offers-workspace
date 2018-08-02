@@ -39,7 +39,7 @@ namespace Services
 
         public VoidResult AddProject(Project project)
         {
-            var result = this.GetEmployee(project.Id);            
+            var result = this.GetEmployee(project.EmployeeId);            
             if(!result.Success)
             {
                 return result;

@@ -53,7 +53,7 @@ namespace MySql.Queries
                 projects.Add(p);
             }
             else {
-                p = projects.First(x=>x.Id != project.Id);
+                p = projects.First(x=>x.Id == project.Id);
             }
 
             if (skill!=null && p.UsedSkills.All(s => s.Id != skill.Id))

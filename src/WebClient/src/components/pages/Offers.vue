@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      timer: null,
       newOffer: { name: "", description: "" },
       formFields: [
         {
@@ -120,6 +121,10 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.timer = setInterval(this.refresh, 10000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   }
 };
 </script>

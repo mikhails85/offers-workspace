@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      timer: null,
       newEmployee: { name: "", jobTitle: "", photo: "", cv: "" },
       formFields: [
         {
@@ -139,6 +140,10 @@ export default {
   },
   mounted() {
     this.refresh();
+    this.timer = setInterval(this.refresh, 10000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   }
 };
 </script>
