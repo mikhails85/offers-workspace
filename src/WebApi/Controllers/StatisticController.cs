@@ -19,5 +19,17 @@ namespace WebApi.Controllers
         {
             return this.Result(this.Service<IStatisticProvider>().GetTotalDocuments());
         }
+
+        [HttpGet("[action]")]
+        public IActionResult EmployeesSkills()
+        {
+            return this.Result(this.Service<IStatisticProvider>().GetEmployeesSkills());
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult OffersSkills()
+        {
+            return this.Result(this.Service<IStatisticProvider>().GetOffersSkills());
+        }
     }
 }

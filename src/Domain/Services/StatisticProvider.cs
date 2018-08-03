@@ -42,5 +42,15 @@ namespace Services
 
             return result;
         }
+
+        public Result<Dictionary<string,long>> GetOffersSkills()
+        {
+            return this.esstorage.Get<Offer>().Query(new GetOffersSkills());            
+        }
+
+        public Result<Dictionary<string,long>> GetEmployeesSkills()
+        {            
+            return this.esstorage.Get<Employee>().Query(new GetEmployeesSkills());            
+        }
     }
 }

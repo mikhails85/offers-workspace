@@ -22,15 +22,34 @@
                 </b-card>
             </b-col>
         </b-row>
+        <b-row>
+            <b-col md="6" v-if="oskills">
+                <b-card>
+                    <v-chart :model-labels="oskills.keys" :model="oskills.values"></v-chart>
+                </b-card>
+            </b-col>
+            <b-col md="6" v-if="eskills">
+                <b-card>
+                    <v-chart :model-labels="eskills.keys" :model="eskills.values" ></v-chart>
+                </b-card>
+            </b-col>
+        </b-row>
     </div>
 </template>
 <script>
 import axios from "axios";
+import chart from "../controls/Chart.vue";
+
 export default {
   name: "Dashboard",
+  components: {    
+    "v-chart": chart
+  },
   data() {
     return {
-      model: null
+      model: null,
+      oskills: null,
+      eskills: null  
     };
   },
   methods: {
@@ -52,6 +71,32 @@ export default {
       .then(r => {
         if (r.data.success) {
           self.model = r.data.value;
+        }
+      });
+    axios
+      .get(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/offersskills"
+      )
+      .then(r => {
+        if (r.data.success) {
+          self.oskills = {keys:[], values:[]}  
+          for (var k in r.data.value) {                
+            self.oskills.keys.push(k); 
+            self.oskills.values.push(r.data.value[k]);     
+          }          
+        }
+      });
+    axios
+      .get(
+        "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/employeesskills"
+      )
+      .then(r => {
+        if (r.data.success) {
+          self.eskills = {keys:[], values:[]}  
+          for (var k in r.data.value) {                
+            self.eskills.keys.push(k); 
+            self.eskills.values.push(r.data.value[k]);     
+          }    
         }
       });
   }
