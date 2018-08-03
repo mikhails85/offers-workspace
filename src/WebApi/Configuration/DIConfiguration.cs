@@ -23,6 +23,7 @@ namespace WebApi.Configuration
             .AddTransient<IEmployeeManager,EmployeeManager>()
             .AddTransient<IOfferManager, OfferManager>()
             .AddTransient<ISkillManager,SkillManager>()
+            .AddTransient<IStatisticProvider,StatisticProvider>()
             .AddTransient<IESStorage,ESStorage>()
             .AddTransient<IDbContext,UnitOfWork>()
             .AddTransient<IQueueManager,MQManager>()

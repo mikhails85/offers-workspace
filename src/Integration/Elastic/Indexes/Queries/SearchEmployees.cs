@@ -14,7 +14,7 @@ namespace Elastic.Indexes.Queries
     {
         private readonly int page;
 
-        public int size { get; }
+        private readonly int size;
 
         private readonly string search;
 
