@@ -17,11 +17,7 @@ namespace Elastic.Indexes.Queries
         {
             var client = context.GetClient();
             var response = client.Search<ESEmployee>(s => s
-                .Query(q => q
-                    .MatchAll())
-                    .Aggregations(a => a.Nested("skills", n => n.Path(p => p.Skills)
-                        .Aggregations(aa => aa.Terms("skill_names", t => t.Field(p => p.Skills.Suffix("name"))))))
-            );
+                    .Aggregations(a => a.Terms("skill_names", t => t.Field(p => p.Skills))));
 
             if (!response.IsValid)
             {
@@ -29,7 +25,7 @@ namespace Elastic.Indexes.Queries
                 return;
             }
 
-            var skills = response.Aggregations.Nested("skills").Terms("skill_names");
+            var skills = response.Aggregations.Terms("skill_names");
             var result = new Dictionary<string, long>();
             foreach(var item in skills.Buckets)
             {                

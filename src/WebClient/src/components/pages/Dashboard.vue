@@ -42,14 +42,14 @@ import chart from "../controls/Chart.vue";
 
 export default {
   name: "Dashboard",
-  components: {    
+  components: {
     "v-chart": chart
   },
   data() {
     return {
       model: null,
       oskills: null,
-      eskills: null  
+      eskills: null
     };
   },
   methods: {
@@ -79,11 +79,11 @@ export default {
       )
       .then(r => {
         if (r.data.success) {
-          self.oskills = {keys:[], values:[]}  
-          for (var k in r.data.value) {                
-            self.oskills.keys.push(k); 
-            self.oskills.values.push(r.data.value[k]);     
-          }          
+          self.oskills = { keys: [], values: [] };
+          for (var k in r.data.value) {
+            self.oskills.keys.push(k);
+            self.oskills.values.push(r.data.value[k]);
+          }
         }
       });
     axios
@@ -92,11 +92,11 @@ export default {
       )
       .then(r => {
         if (r.data.success) {
-          self.eskills = {keys:[], values:[]}  
-          for (var k in r.data.value) {                
-            self.eskills.keys.push(k); 
-            self.eskills.values.push(r.data.value[k]);     
-          }    
+          self.eskills = { keys: [], values: [] };
+          for (var k in r.data.value) {
+            self.eskills.keys.push(k);
+            self.eskills.values.push(r.data.value[k]);
+          }
         }
       });
   }

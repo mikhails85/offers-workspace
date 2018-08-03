@@ -17,19 +17,14 @@ namespace Elastic.Indexes.Queries
         {
             var client = context.GetClient();
             var response = client.Search<ESOffer>(s => s
-                .Query(q => q
-                    .MatchAll())
-                    .Aggregations(a => a.Nested("skills", n => n.Path(p => p.RequaredSkills)
-                        .Aggregations(aa => aa.Terms("skill_names", t => t.Field(p => p.RequaredSkills.Suffix("name"))))))
-            );
-
+                    .Aggregations(a => a.Terms("skill_names", t => t.Field(p => p.RequaredSkills.Suffix("name")))));
             if (!response.IsValid)
             {
                 this.AddErrors(new QueryExectutionFailedError(response.DebugInformation));
                 return;
             }
 
-            var skills = response.Aggregations.Nested("skills").Terms("skill_names");
+            var skills = response.Aggregations.Terms("skill_names");
             var result = new Dictionary<string, long>();
             foreach(var item in skills.Buckets)
             {                
