@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Nest;
 
 namespace ES.Test
@@ -10,6 +11,10 @@ namespace ES.Test
             var node = new Uri("http://localhost:9200");
             var settings = new ConnectionSettings(node).DefaultIndex("test");
             var client = new ElasticClient(settings);
+            if(client.IndexExists("test").Exists)
+            {
+                client.DeleteIndex("test");
+            }
             if(!client.IndexExists("test").Exists)
             {
                 var createResult = client.CreateIndex("test", c => c
@@ -31,30 +36,24 @@ namespace ES.Test
                 }
             }
 
-            var result = client.IndexDocument(new Model{Id = 1, Name ="Test"});
+            var result = client.IndexDocument(new Model{Id = 1, Name ="Test 1", Skills= new List<string>{"C#", ".Net Core", "Vue.Js"}});
             if (!result.IsValid)
                 Console.WriteLine($"Error: {result.DebugInformation}"); 
                 
-            result = client.IndexDocument(new Model{Id = 1, Name ="Test"});
+            result = client.IndexDocument(new Model{Id = 2, Name ="Test 2", Skills= new List<string>{"C#", ".Net Core", "Vue.Js"}});
             if (!result.IsValid)
                 Console.WriteLine($"Error: {result.DebugInformation}"); 
                 
-            var searchResponse = client.Search<Model>(s => s
-                .From(0)
-                .Size(10)
-                .Query(q => q
-                     .Match(m => m
-                        .Field(f => f.Name)
-                        .Query("Test")
-                     )
-                )
+            var searchResponse = client.Search<Model>(s => s                
+                .Size(0)
+                .Aggregations(x=>x.Terms("skills", p=>p.Field(f=>f.Skills)))
             );
             
-            var people = searchResponse.Documents; 
+            var people = searchResponse.Aggregations.Terms("skills").Buckets; 
             
             foreach(var item in people)
             {
-                Console.WriteLine($"Error: {item.Name}");    
+                Console.WriteLine($"Bucket: {item.Key}:{item.DocCount}");    
             }
         }
     }
@@ -63,5 +62,6 @@ namespace ES.Test
     {
         public int Id { get;set;}
         public string Name { get;set;}
+        public List<string> Skills { get;set;}
     }
 }
