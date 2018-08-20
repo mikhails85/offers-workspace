@@ -14,7 +14,7 @@ namespace Elastic.Indexes.Models
         public string Photo {get;set;}
         public string CV {get;set;}                                       
         public List<Project> Projects {get;set;}
-        public List<string> Skills {get;set;}
+        public List<Skill> Skills {get;set;}
 
         public static implicit operator ESEmployee(Employee employee)
         {
@@ -26,7 +26,8 @@ namespace Elastic.Indexes.Models
             e.CV = employee.CV;
             e.Projects = employee.Projects;
 
-            e.Skills = employee.Projects?.SelectMany(x=>x.UsedSkills).GroupBy(x=>x.Name).Select(x=>x.Key).ToList();
+            var skills = employee.Projects?.SelectMany(x=>x.UsedSkills).ToList();
+            e.Skills = skills.GroupBy(x=>x.Id).Select(x=>skills.First(s=>s.Id==x.Key)).ToList();
             return e;
         }
 

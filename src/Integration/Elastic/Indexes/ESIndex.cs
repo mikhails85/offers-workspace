@@ -18,7 +18,7 @@ namespace Elastic.Indexes
         {
             this.index = index;
             var node = new Uri(storage.ConnectionSettings.NodeUrl);
-            var settings = new ConnectionSettings(node).DefaultIndex(index);
+            var settings = (new ConnectionSettings(node)).DefaultIndex(index).DisableDirectStreaming();
             this.client = new ElasticClient(settings);
 
             if(!this.IndexExists())

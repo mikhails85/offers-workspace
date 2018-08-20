@@ -13,10 +13,12 @@ namespace Services
     public class StatisticProvider : IStatisticProvider
     {
         private readonly IESStorage esstorage;
+        private readonly ISkillManager skillsStorage;
 
-        public StatisticProvider(IESStorage esstorage)
+        public StatisticProvider(IESStorage esstorage, ISkillManager skillsStorage)
         {
             this.esstorage = esstorage;
+            this.skillsStorage = skillsStorage;
         }
 
         public Result<TotalDocuments> GetTotalDocuments()
@@ -45,12 +47,62 @@ namespace Services
 
         public Result<Dictionary<string,long>> GetOffersSkills()
         {
-            return this.esstorage.Get<Offer>().Query(new GetOffersSkills());            
+            var result = new Result<Dictionary<string,long>>();
+            var skillResult = this.skillsStorage.GetSkillList();
+            if(!skillResult.Success)
+            {
+               result.AddErrors(skillResult.Errors);
+               return result;      
+            }
+            var offersSkillsResult = this.esstorage.Get<Offer>().Query(new GetOffersSkills());
+
+            if(!offersSkillsResult.Success)
+            {
+               result.AddErrors(offersSkillsResult.Errors);
+               return result;      
+            }
+
+            var statistic = new Dictionary<string, long>();
+
+            foreach(var key in offersSkillsResult.Value.Keys)
+            {
+                var id = long.Parse(key);
+                statistic.Add(skillResult.Value.First(x=>x.Id == id).Name, offersSkillsResult.Value[key]);
+            }
+
+            result.SetValue(statistic);
+
+            return result;            
         }
 
         public Result<Dictionary<string,long>> GetEmployeesSkills()
-        {            
-            return this.esstorage.Get<Employee>().Query(new GetEmployeesSkills());            
+        {   
+            var result = new Result<Dictionary<string,long>>();
+            var skillResult = this.skillsStorage.GetSkillList();
+            if(!skillResult.Success)
+            {
+               result.AddErrors(skillResult.Errors);
+               return result;      
+            }         
+            var employeesSkillsResult = this.esstorage.Get<Employee>().Query(new GetEmployeesSkills());     
+
+            if(!employeesSkillsResult.Success)
+            {
+               result.AddErrors(employeesSkillsResult.Errors);
+               return result;      
+            }
+
+            var statistic = new Dictionary<string, long>();
+
+            foreach(var key in employeesSkillsResult.Value.Keys)
+            {
+                var id = long.Parse(key);
+                statistic.Add(skillResult.Value.First(x=>x.Id == id).Name, employeesSkillsResult.Value[key]);
+            }
+
+            result.SetValue(statistic);
+
+            return result;            
         }
     }
 }
