@@ -20,6 +20,7 @@
             :items="items"
             :fields="fields"
     >
+        <slot name="columns"></slot>
         <template slot="actions" slot-scope="row">
             <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
             <b-button v-if="onUpdate" size="sm" variant="warning" @click.stop="openEdit(row.item, row.index, $event.target)" class="mr-1">

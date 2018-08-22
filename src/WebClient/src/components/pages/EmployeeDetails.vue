@@ -14,7 +14,13 @@
                         <div>
                           Projects:
                         </div>
-                        <v-table ref="table" :tbl-data="employee.projects" :tbl-fields="projFields" :on-create="createProj" :on-delete="removeProj"></v-table>
+                        <v-table ref="table" :tbl-data="employee.projects" :tbl-fields="projFields" :on-create="createProj" :on-delete="removeProj">
+                          <template slot="columns">
+                            <template slot="skills" slot-scope="row">
+                              <b-badge v-for="skill in row.usedSkills" :key="skill.id">{skill.name}</b-badge>
+                            </template>  
+                          </template>  
+                        </v-table>
                         <b-modal id="modalAdd" @hide="resetAddProjModal" @ok="addProject" title="New Project">
                             <v-form :frm-model="newProject" :frm-fields="formProjFields"></v-form>
                             <div class="mb-1">Skills:</div>
@@ -95,6 +101,7 @@ export default {
       projFields: [
         { key: "id", label: "ID", sortable: true },
         { key: "name", label: "Offer", sortable: true },
+        { key: "skills", label: "Skills"},
         { key: "actions", label: "Actions", class: "sm" }
       ]
     };
