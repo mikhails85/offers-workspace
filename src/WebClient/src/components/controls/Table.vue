@@ -20,7 +20,12 @@
             :items="items"
             :fields="fields"
     >
-        <slot name="columns"></slot>
+        <template slot="usedSkills" slot-scope="row">
+            <b-badge v-for="skill in row.item.usedSkills" class="mr-1" :key="skill.id" >{{skill.name}}</b-badge>
+        </template>  
+        <template slot="requaredSkills" slot-scope="row">
+            <b-badge v-for="skill in row.item.requaredSkills" class="mr-1" :key="skill.id" >{{skill.name}}</b-badge>
+        </template>  
         <template slot="actions" slot-scope="row">
             <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
             <b-button v-if="onUpdate" size="sm" variant="warning" @click.stop="openEdit(row.item, row.index, $event.target)" class="mr-1">

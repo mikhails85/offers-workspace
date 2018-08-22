@@ -52,6 +52,7 @@ export default {
       fields: [
         { key: "id", label: "ID", sortable: true },
         { key: "name", label: "Offer", sortable: true },
+        { key: "requaredSkills", label: "Skills" },
         { key: "actions", label: "Actions", class: "sm" }
       ]
     };
