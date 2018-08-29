@@ -19,6 +19,12 @@
                         <b-button size="lg" variant="primary" @click.stop="updateOffer" class="mr-1">Save changes</b-button>
                     </b-col>
                 </b-row>
+                <b-row>
+                  <b-col md="12">
+                      <v-table ref="tblEmployees" :tbl-data="employees" :tbl-fields="employeeFields" :on-next-page="getEmployeesNextPage">
+                      </v-table>
+                  </b-col>
+                </b-row>
             </div>
         </div>
     </div>
@@ -27,11 +33,17 @@
 import axios from "axios";
 import selector from "../controls/Selector.vue";
 import form from "../controls/Form.vue";
+import table from "../controls/Table.vue";
+
+let page = 0;
+let size = 50;
+
 export default {
   name: "OfferDetails",
   components: {
     "v-selector": selector,
-    "v-form": form
+    "v-form": form,
+    "v-table": table
   },
   data() {
     return {
@@ -53,6 +65,12 @@ export default {
           label: "Description",
           placeholder: "Enter offer description"
         }
+      ],
+      employees:[],
+      employeeFields:[
+        { key: "id", label: "ID", sortable: true },
+        { key: "name", label: "Full Name", sortable: true },
+        { key: "jobTitle", label: "Job Title", sortable: true }
       ]
     };
   },
@@ -64,9 +82,27 @@ export default {
           "/updateoffer",
         this.offer
       );
+    },
+    getEmployeesNextPage(){
+      page = page + 1;
+      this.refresh();
+    },
+    refresh() {
+      let self = this;
+      axios
+        .get(
+          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableemployees"+self.id+"?page=0&size=" +
+            (page + 1) * size 
+        )
+        .then(r => {
+          if (r.data.success) {
+            self.$refs.tblEmployees.refresh(r.data.value);
+          }
+        });
     }
   },
   mounted() {
+    this.refresh();
     axios
       .get("http://es-workspace-mikhails85.c9users.io:8081/api/skills/list")
       .then(sr => {

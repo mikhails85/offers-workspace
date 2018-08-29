@@ -14,11 +14,18 @@ namespace Services
     {
         private readonly IESStorage esstorage;
         private readonly ISkillManager skillsStorage;
+        private readonly IOfferManager offerManager;
+        private readonly IEmployeeManager employeeManager;
 
-        public StatisticProvider(IESStorage esstorage, ISkillManager skillsStorage)
+        public StatisticProvider(IESStorage esstorage, 
+                                 ISkillManager skillsStorage, 
+                                 IOfferManager offerManager, 
+                                 IEmployeeManager employeeManager)
         {
             this.esstorage = esstorage;
             this.skillsStorage = skillsStorage;
+            this.offerManager = offerManager;
+            this.employeeManager = employeeManager;
         }
 
         public Result<TotalDocuments> GetTotalDocuments()
@@ -103,6 +110,46 @@ namespace Services
             result.SetValue(statistic);
 
             return result;            
+        }
+
+        public Result<IEnumerable<Offer>> GetAvailableOffers(int page, int size, long employeeId)
+        {
+            var result = new Result<IEnumerable<Offer>>();
+            var employeeResult = this.employeeManager.GetEmployee(employeeId);
+            if(!employeeResult.Success)
+            {
+                result.AddErrors(employeeResult.Errors);
+                return result;
+            }
+
+            var offersResult = this.esstorage.Get<Offer>().Query(new GetAvailableOffers(page, size, employeeResult.Value));     
+            if(!offersResult.Success)
+            {
+                result.AddErrors(offersResult.Errors);
+                return result;
+            }
+            result.SetValue(offersResult.Value);
+            return result;
+        }
+
+        public Result<IEnumerable<Employee>> GetAvailableEmployees(int page, int size, long offerId)
+        {
+            var result = new Result<IEnumerable<Employee>>();
+            var offerResult = this.offerManager.GetOffer(offerId);
+            if(!offerResult.Success)
+            {
+                result.AddErrors(offerResult.Errors);
+                return result;
+            }
+
+            var employeesResult = this.esstorage.Get<Employee>().Query(new GetAvailableEmployees(page, size, offerResult.Value));     
+            if(!employeesResult.Success)
+            {
+                result.AddErrors(employeesResult.Errors);
+                return result;
+            }
+            result.SetValue(employeesResult.Value);
+            return result;
         }
     }
 }

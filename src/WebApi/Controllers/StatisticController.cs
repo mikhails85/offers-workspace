@@ -31,5 +31,17 @@ namespace WebApi.Controllers
         {
             return this.Result(this.Service<IStatisticProvider>().GetOffersSkills());
         }
+
+        [HttpGet("[action]/{id}")]
+        public IActionResult AvailableEmployees(long id, int page, int size)
+        {
+            return this.Result(this.Service<IStatisticProvider>().GetAvailableEmployees(page, size,id));
+        }
+
+        [HttpGet("[action]/{id}")]
+        public IActionResult AvailableOffers(long id, int page, int size)
+        {
+            return this.Result(this.Service<IStatisticProvider>().GetAvailableOffers(page, size,id));
+        }
     }
 }

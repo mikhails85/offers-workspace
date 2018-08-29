@@ -23,6 +23,12 @@
                         </b-modal>                
                     </b-col>  
                 </b-row>
+                <b-row>
+                  <b-col md="12">
+                      <v-table ref="tblOffers" :tbl-data="offers" :tbl-fields="offerFields" :on-next-page="getOffersNextPage">
+                      </v-table>
+                  </b-col>
+                </b-row>
             </div>
         </div>
     </div>
@@ -32,6 +38,9 @@ import axios from "axios";
 import selector from "../controls/Selector.vue";
 import form from "../controls/Form.vue";
 import table from "../controls/Table.vue";
+
+let page = 0;
+let size = 50;
 
 export default {
   name: "EmployeeDetails",
@@ -98,6 +107,11 @@ export default {
         { key: "name", label: "Offer", sortable: true },
         { key: "usedSkills", label: "Skills" },
         { key: "actions", label: "Actions", class: "sm" }
+      ],
+      offers:[],
+      offerFields:[
+        { key: "id", label: "ID", sortable: true },
+        { key: "name", label: "Offer", sortable: true }        
       ]
     };
   },
@@ -166,6 +180,23 @@ export default {
           self.employee.projects = r.data.value;
           self.$refs.table.refresh(self.employee.projects);
         });
+    },
+    getOffersNextPage(){
+      page = page + 1;
+      this.offersRefresh();
+    },
+    offersRefresh() {
+      let self = this;
+      axios
+        .get(
+          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableoffers"+self.id+"?page=0&size=" +
+            (page + 1) * size 
+        )
+        .then(r => {
+          if (r.data.success) {
+            self.$refs.tblOffers.refresh(r.data.value);
+          }
+        });
     }
   },
   beforeDestroy() {
@@ -173,6 +204,8 @@ export default {
   },
   mounted() {
     this.timer = setInterval(this.refreshProjects, 10000);
+    this.offersRefresh();
+    
     axios
       .get("http://es-workspace-mikhails85.c9users.io:8081/api/skills/list")
       .then(sr => {
