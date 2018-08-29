@@ -108,10 +108,10 @@ export default {
         { key: "usedSkills", label: "Skills" },
         { key: "actions", label: "Actions", class: "sm" }
       ],
-      offers:[],
-      offerFields:[
+      offers: [],
+      offerFields: [
         { key: "id", label: "ID", sortable: true },
-        { key: "name", label: "Offer", sortable: true }        
+        { key: "name", label: "Offer", sortable: true }
       ]
     };
   },
@@ -181,7 +181,7 @@ export default {
           self.$refs.table.refresh(self.employee.projects);
         });
     },
-    getOffersNextPage(){
+    getOffersNextPage() {
       page = page + 1;
       this.offersRefresh();
     },
@@ -189,8 +189,10 @@ export default {
       let self = this;
       axios
         .get(
-          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableoffers"+self.id+"?page=0&size=" +
-            (page + 1) * size 
+          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableoffers/" +
+            self.id +
+            "?page=0&size=" +
+            (page + 1) * size
         )
         .then(r => {
           if (r.data.success) {
@@ -205,7 +207,7 @@ export default {
   mounted() {
     this.timer = setInterval(this.refreshProjects, 10000);
     this.offersRefresh();
-    
+
     axios
       .get("http://es-workspace-mikhails85.c9users.io:8081/api/skills/list")
       .then(sr => {

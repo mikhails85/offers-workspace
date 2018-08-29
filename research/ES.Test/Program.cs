@@ -9,11 +9,11 @@ namespace ES.Test
         static void Main(string[] args)
         {
             var node = new Uri("http://localhost:9200");
-            var settings = new ConnectionSettings(node).DefaultIndex("employees");
+            var settings = new ConnectionSettings(node).DefaultIndex("offers");
             var client = new ElasticClient(settings);
-            if(client.IndexExists("employees").Exists)
+            if(client.IndexExists("offers").Exists)
             {
-                client.DeleteIndex("employees");
+                client.DeleteIndex("offers");
                 Console.WriteLine($"Index Deleted");           
             }
             

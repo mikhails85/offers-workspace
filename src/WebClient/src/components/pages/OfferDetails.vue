@@ -66,8 +66,8 @@ export default {
           placeholder: "Enter offer description"
         }
       ],
-      employees:[],
-      employeeFields:[
+      employees: [],
+      employeeFields: [
         { key: "id", label: "ID", sortable: true },
         { key: "name", label: "Full Name", sortable: true },
         { key: "jobTitle", label: "Job Title", sortable: true }
@@ -83,7 +83,7 @@ export default {
         this.offer
       );
     },
-    getEmployeesNextPage(){
+    getEmployeesNextPage() {
       page = page + 1;
       this.refresh();
     },
@@ -91,8 +91,10 @@ export default {
       let self = this;
       axios
         .get(
-          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableemployees"+self.id+"?page=0&size=" +
-            (page + 1) * size 
+          "http://es-workspace-mikhails85.c9users.io:8081/api/statistic/availableemployees/" +
+            self.id +
+            "?page=0&size=" +
+            (page + 1) * size
         )
         .then(r => {
           if (r.data.success) {

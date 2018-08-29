@@ -27,7 +27,7 @@ namespace Elastic.Indexes.Models
             {
                 o.Query &= new MatchQuery 
                 {
-                    Field = new Field("skills.id"),
+                    Field = Infer.Field<ESEmployee>(entry => entry.Skills.First().Id),//new Field("skills.id"),
                     Query = skill.Id.ToString()
                 };    
             }
