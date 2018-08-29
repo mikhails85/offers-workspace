@@ -14,7 +14,7 @@ namespace Elastic.Indexes.Queries
     {
         private readonly int page;
         private readonly int size;
-        private readonly Employee employee;
+        private readonly ESEmployee employee;
 
         public GetAvailableOffers(int page, int size, Employee employee)
         {
